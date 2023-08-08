@@ -8,6 +8,10 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const db = require("./db");
 const { User } = require("./db/models");
 const cors = require('cors');
+
+const errorHandler = require('./error-handlers/500.js');
+const notFound = require('./error-handlers/404.js');
+
 // create store for sessions to persist in database
 const sessionStore = new SequelizeStore({ db });
 // const {router2} =  require("./routes/auth/v2")
@@ -46,9 +50,9 @@ app.use("/api", require("./routes/api"));
 // app.use('/api/v22', router2);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function (err, req, res, next) {
@@ -56,10 +60,13 @@ app.use(function (err, req, res, next) {
   console.log(err);
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
-
+  
   // render the error page
-  res.status(err.status || 500);
-  res.json({ error: err });
+  
+    app.use(notFound);
+    app.use(errorHandler);
+    res.json({ error: err });
+  // res.status(err.status || 500);
 });
 
 module.exports = { app, sessionStore };

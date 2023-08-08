@@ -19,6 +19,12 @@ const User = db.define("user", {
   photoUrl: {
     type: Sequelize.STRING
   },
+  address: {
+    type: Sequelize.STRING
+  },
+  phone: {
+    type: Sequelize.STRING
+  },
   password: {
     type: Sequelize.STRING,
     validate: {
