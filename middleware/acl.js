@@ -6,6 +6,7 @@ module.exports = (capability) => {
 
     try {
       if (req.user.capabilities.includes(capability)) {
+        console.log('req.user.capabilities',req.user.capabilities);
         next();
       }
       else {

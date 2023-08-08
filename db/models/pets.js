@@ -8,10 +8,16 @@ const petModel = db.define('pets', {
     petOwnerName: { type: Sequelize.STRING ,required: true},
     petOwnerEmail: { type: Sequelize.STRING,required: true},
     userPhone: { type: Sequelize.STRING,required: true },
-    origin: { type: Sequelize.STRING },
+    description: { type: Sequelize.STRING },
     petType: { type: Sequelize.ENUM('cat','dog'),
      required: true, defaultValue: 'cat'},
-  
+
+     gender: { type: Sequelize.ENUM('male','female'),
+     required: true, defaultValue: 'female'},
+
+     photoUrl: {
+      type: Sequelize.STRING
+    },
   
     userId: {
       type: Sequelize.INTEGER,

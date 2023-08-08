@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const onlineUsers = require('../../onlineUsers');
 const sockets = require('../../socketConnection');
 const bearer = require('../../middleware/bearer')
+const permissions = require('../../middleware/acl')
 
 // localhost:3001/auth/register
 router.post("/register", async (req, res, next) => {
@@ -93,7 +94,7 @@ router.get("/user", (req, res, next) => {
     return res.json({});
   }
 });
-router.get('/users',  async (req, res, next) => {
+router.get('/users' , async (req, res, next) => {
   const userRecords = await User.findAll({});
   // const list = userRecords.map(user => user.username);
   res.status(200).json(userRecords);
@@ -107,6 +108,16 @@ router.delete('/users/:id', async (req, res, next) => {
   res.status(200).json(deleteUser);
 });
 
+router.put('/users/:id', async (req, res, next) => {
+  let id = req.params.id;
+  const obj = req.body;
+  const userRecords = await User.findOne({where:{id}})
+  .then(record => record.update(obj));
+  console.log("user record",userRecords);
+  // let updatedRecord = await req.model.update(id, obj)
+  res.status(200).json(userRecords);
+  // const list = userRecords.map(user => user.username);
+});
 router.get('/secret', bearer, async (req, res, next) => {
   res.status(200).send('Welcome to the secret area');
 });
